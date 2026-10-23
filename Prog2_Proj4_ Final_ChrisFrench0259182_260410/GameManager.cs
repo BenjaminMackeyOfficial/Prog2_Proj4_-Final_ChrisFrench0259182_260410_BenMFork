@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using prog2_Proj3_beta_ChrisFrench0259182_260324;
 
 namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
 {
@@ -40,7 +41,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         public static Dictionary<int, List<Peon>> MapPeonRegistry = new Dictionary<int, List<Peon>>();
         public static bool isPlaying = true;
         public static bool isAlly = false; //sets bool to check for other allies in movement path
-      
+        public static QuestManager questManager = new QuestManager(); // <-- ben stuff
 
 
         public static bool IsTileOccupied(int x, int y)
@@ -147,6 +148,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                     HUD.Instructions();
 
                     HUD.plStats();
+                    HUD.QuestDisplay();
                 }
                 /////////////////
 
@@ -212,7 +214,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                     continue; //skips past rest
                 }
 
-                if (GameManager.map._currentMapIndex == 0)
+                if (GameManager.map._currentMapIndex <= 0 | GameManager.map._currentMapIndex > 3)
                 {
                     for (int i = enemiesMap1.Count - 1; i >= 0; i--)
                     {
@@ -223,42 +225,10 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                             Console.SetCursorPosition(enemiesMap1[i]._x, enemiesMap1[i]._y);
                             WriteTileWithColor(map._mapsCurrent[enemiesMap1[i]._y][enemiesMap1[i]._x]);
                             enemiesMap1.RemoveAt(i);
+                            questManager.EnemyKilled();
                         }
                         else
                         { EnemyLeader.MoveEnemy(enemiesMap1[i]); }
-                    }
-                }
-                if (GameManager.map._currentMapIndex == 1)
-                {
-                    for (int i = enemiesMap2.Count - 1; i >= 0; i--)
-                    {
-                        if (enemiesMap2[i]._health <= 0)
-                        {
-                            Console.Beep(300, 100);
-                            Console.Beep(200, 150);
-                            Console.SetCursorPosition(enemiesMap2[i]._x, enemiesMap2[i]._y);
-                            WriteTileWithColor(map._mapsCurrent[enemiesMap2[i]._y][enemiesMap2[i]._x]);
-                            enemiesMap2.RemoveAt(i);
-                        }
-                        else
-                        { EnemyLeader.MoveEnemy(enemiesMap2[i]); }
-                    }
-                }
-
-                if (GameManager.map._currentMapIndex == 2)
-                {
-                    for (int i = enemiesMap3.Count - 1; i >= 0; i--)
-                    {
-                        if (enemiesMap3[i]._health <= 0)
-                        {
-                            Console.Beep(300, 100);
-                            Console.Beep(200, 150);
-                            Console.SetCursorPosition(enemiesMap3[i]._x, enemiesMap3[i]._y);
-                            WriteTileWithColor(map._mapsCurrent[enemiesMap3[i]._y][enemiesMap3[i]._x]);
-                            enemiesMap3.RemoveAt(i);
-                        }
-                        else
-                        { EnemyLeader.MoveEnemy(enemiesMap3[i]); }
                     }
                 }
 
@@ -278,6 +248,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                             Console.SetCursorPosition(enemyRiderList[i]._x, enemyRiderList[i]._y);
                             WriteTileWithColor(map._mapsCurrent[enemyRiderList[i]._y][enemyRiderList[i]._x]);
                             enemyRiderList.RemoveAt(i);
+                            questManager.EnemyKilled();
                         }
                         else
                         { EnemyRider.MoveTowards(enemyRiderList[i]); }
@@ -287,6 +258,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                 DrawEntities();
                 Thread.Sleep(50);///
                 HUD.plStats();
+                HUD.QuestDisplay();
                 
 
             }
@@ -300,6 +272,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
                 }
                 if (map._mapsCurrent[player._y][player._x] == 'X')
                 {
+                    GameManager.questManager.LocationVisited('X');
                     isPlaying = false;
                     HUD.plWin();
                     

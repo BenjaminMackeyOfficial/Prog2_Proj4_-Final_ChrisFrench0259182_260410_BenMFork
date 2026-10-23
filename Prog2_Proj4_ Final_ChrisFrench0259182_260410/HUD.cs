@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using prog2_Proj3_beta_ChrisFrench0259182_260324;
 
 namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
 {
@@ -137,6 +138,40 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
             Console.SetCursorPosition(58, 2);
             Console.WriteLine($"Gold:{Treasure._gold} Captives Freed:{Captive._freed}");
             Console.ResetColor();
+        }
+        public static void QuestDisplay()
+        {
+            if (GameManager.questManager.quests == null || GameManager.questManager.quests.Length == 0) return;
+
+            int xPos = 58;
+            int baseYPos = 4; //below the plrstats above
+
+            Console.SetCursorPosition(xPos, baseYPos);
+            Console.WriteLine("Quests:");
+            for (int i = 0; i < GameManager.questManager.quests.Length; i++)
+            {
+                Console.SetCursorPosition(xPos, baseYPos + i);
+                string toType = "";
+                Quest q = GameManager.questManager.quests[i];
+
+                if (q is NumberQuest)
+                {
+                    NumberQuest nq = (NumberQuest)q;
+                    toType = nq._name + ": " + nq._numCompleted + "/" + nq._numNeeded;
+                    if (nq._complete) toType += " (Complete)";
+                }
+                if (q is BoolQuest)
+                {
+                    BoolQuest bq = (BoolQuest)q;
+                    if (bq._complete) toType = bq._name + ": " + "Complete!";
+                    else toType = bq._name + ": " + "Incomplete!";
+                }
+                if (toType != "")
+                {
+                    Console.WriteLine(toType);
+                }
+
+            }
         }
         public static void plDied()
         {

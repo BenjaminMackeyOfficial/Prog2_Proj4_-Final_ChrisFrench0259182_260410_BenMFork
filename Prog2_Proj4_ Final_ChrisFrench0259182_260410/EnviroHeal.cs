@@ -25,6 +25,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
 
             if (GameManager.map._mapsCurrent[GameManager.player._y][GameManager.player._x] == 'w')// applies spring water healing
             {
+                GameManager.questManager.LocationVisited('w');
                 GameManager.player._health += 20;
                 if (GameManager.player._health > GameManager.plaMaxHP)
                 {
