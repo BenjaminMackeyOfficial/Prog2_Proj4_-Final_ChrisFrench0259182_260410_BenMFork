@@ -144,10 +144,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
             if (GameManager.questManager.quests == null || GameManager.questManager.quests.Length == 0) return;
 
             int xPos = 58;
-            int baseYPos = 4; //below the plrstats above
-
-            Console.SetCursorPosition(xPos, baseYPos);
-            Console.WriteLine("Quests:");
+            int baseYPos = 3; //below the plrstats above
             for (int i = 0; i < GameManager.questManager.quests.Length; i++)
             {
                 Console.SetCursorPosition(xPos, baseYPos + i);
@@ -209,13 +206,13 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         {
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.SetCursorPosition(58, 5);
-            Console.WriteLine($"{GameManager.player._name} loots the Holy Fraculator! A.K.A. The Peon");
-            Console.SetCursorPosition(58, 6);       
-            Console.WriteLine($"Mulcher 6000. Fine print on 1 side says 'Face Towards Peon'.");    
             Console.SetCursorPosition(58, 7);
+            Console.WriteLine($"{GameManager.player._name} loots the Holy Fraculator! A.K.A. The Peon");
+            Console.SetCursorPosition(58, 8);       
+            Console.WriteLine($"Mulcher 6000. Fine print on 1 side says 'Face Towards Peon'.");    
+            Console.SetCursorPosition(58, 9);
             Console.WriteLine($"A wave of energy pulses out and kills all low level peons");
-            Console.SetCursorPosition(58, 8);
+            Console.SetCursorPosition(58, 10);
             Console.WriteLine($"on this stage {GameManager.player._name} gets {PowerOrb._XP} XP...woooo!");
             Console.ResetColor();
 
@@ -243,9 +240,9 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         {
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.SetCursorPosition(60, 5);
+            Console.SetCursorPosition(60, 7);
             Console.WriteLine($" {GameManager.player._name} loots {Treasure.loot} amounts of golds! ");
-            Console.SetCursorPosition(60, 6);
+            Console.SetCursorPosition(60, 8);
             Console.WriteLine($"{GameManager.player._name} now has {Treasure.goldie} gold...woooo!");
 
             Console.ResetColor();
@@ -258,11 +255,11 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         {
             Console.ForegroundColor = ConsoleColor.Gray;
 
-            Console.SetCursorPosition(60, 4);
-            Console.WriteLine($"{GameManager.player._name} has freed a captive... Good Job! ");
-            Console.SetCursorPosition(60, 5);
-            Console.WriteLine($"They tell you their name is {Heston} and they thank ");
             Console.SetCursorPosition(60, 6);
+            Console.WriteLine($"{GameManager.player._name} has freed a captive... Good Job! ");
+            Console.SetCursorPosition(60, 7);
+            Console.WriteLine($"They tell you their name is {Heston} and they thank ");
+            Console.SetCursorPosition(60, 8);
             Console.WriteLine($"you with a small power up an a couple of gold they hid.");
 
             Console.ResetColor();
