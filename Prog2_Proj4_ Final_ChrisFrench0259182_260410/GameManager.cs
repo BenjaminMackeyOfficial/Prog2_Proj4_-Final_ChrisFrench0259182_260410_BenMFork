@@ -25,10 +25,13 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         //  public static LoadMap map = new LoadMap();
         // public static bool isPlaying = true;
 
+        public static FileLoader fileLoader = new FileLoader();
         public static string Name;
-        public static int MaxNameLLength = 15;
-        public static int plaAtkUP = 15;
-        public static int plaMaxHP = 50;
+
+        public static int MaxNameLLength;
+        public static int plaAtkUP;
+        public static int plaMaxHP;
+
         public static Player player = new Player(" ", 3, 3, plaAtkUP, '!', plaMaxHP, ConsoleColor.DarkBlue, ConsoleColor.White, (1, 55), (1, 24));
         public static List<EnemyLeader> enemiesMap1 = new List<EnemyLeader>();
         public static List<EnemyLeader> enemiesMap2 = new List<EnemyLeader>();
@@ -41,7 +44,7 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
         public static Dictionary<int, List<Peon>> MapPeonRegistry = new Dictionary<int, List<Peon>>();
         public static bool isPlaying = true;
         public static bool isAlly = false; //sets bool to check for other allies in movement path
-        public static QuestManager questManager = new QuestManager(); // <-- ben stuff
+        public static QuestManager questManager; // <-- ben stuff
 
 
         public static bool IsTileOccupied(int x, int y)
@@ -93,6 +96,12 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
 
         public static void StartGame()
         {
+            fileLoader.LoadFile("Data.Json");
+            questManager = new QuestManager();
+            MaxNameLLength = fileLoader._currentData._playerStatData._maxNameLLength;
+            plaAtkUP = fileLoader._currentData._playerStatData._plaAtkUP;
+            plaMaxHP = fileLoader._currentData._playerStatData._plaMaxHP;
+
             Console.SetCursorPosition(0, 0);
             HUD.alias();
             Console.Clear();

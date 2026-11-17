@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Prog2_Proj4_Final_ChrisFrench0259182_260410;
 
 namespace prog2_Proj3_beta_ChrisFrench0259182_260324
 {
@@ -17,7 +18,7 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
         public int _numCompleted;
         public int _numNeeded;
     }
-    public abstract class BoolQuest : Quest //couldnt thinnk of a better name lol
+    public abstract class BoolQuest : Quest
     {
 
     }
@@ -50,19 +51,9 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
     }
     public class QuestManager
     {
-        /* the 3 quests
-        "Ah, that was refreshing! ("Heal from sprint water")"
-        "Back you, I say Back! (Defeat an enemy)"
-        "Safe at last! (Win)"
-        */
-
         public QuestManager() 
-        { 
-            quests = new Quest[3];
-
-            quests[0] = new KillQuest(10);
-            quests[1] = new LocationQuest('w', "Take a dip! (Heal in water)");
-            quests[2] = new LocationQuest('X', "Escape Neverware");
+        {
+            quests = GameManager.fileLoader._currentData._questData._allQuests;
         }
 
         public Quest[] quests { get; private set; }
