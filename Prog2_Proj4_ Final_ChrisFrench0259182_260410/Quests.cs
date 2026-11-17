@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,14 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
 {
     public abstract class Quest
     {
-        public string _name;
-        public bool _complete;
+        public string _name { get; set; }
+        public bool _complete { get; set; }
         public abstract void CountTowards();
     }
     public abstract class NumberQuest : Quest
     {
-        public int _numCompleted;
-        public int _numNeeded;
+        public int _numCompleted { get; set; }
+        public int _numNeeded { get; set; }
     }
     public abstract class BoolQuest : Quest
     {
@@ -37,7 +38,7 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
     }
     public class LocationQuest : BoolQuest
     {
-        public char _locationChecker;
+        public char _locationChecker { get; set; }
         public override void CountTowards()
         {
             _complete = true;
@@ -53,7 +54,7 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
     {
         public QuestManager() 
         {
-            quests = GameManager.fileLoader._currentData._questData._allQuests;
+            quests = GameManager.fileLoader._currentData._questData.GetAllQuests();
         }
 
         public Quest[] quests { get; private set; }

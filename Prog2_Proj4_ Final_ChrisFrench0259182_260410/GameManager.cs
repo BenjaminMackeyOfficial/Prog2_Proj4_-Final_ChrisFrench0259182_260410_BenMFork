@@ -96,7 +96,8 @@ namespace Prog2_Proj4_Final_ChrisFrench0259182_260410
 
         public static void StartGame()
         {
-            fileLoader.LoadFile("Data.Json");
+            //fileLoader.CreateExampleFile();   <--- this is for getting a default file you can copy and paste
+            fileLoader.LoadFile(FileLoader.DATAFILEPATH);
             questManager = new QuestManager();
             MaxNameLLength = fileLoader._currentData._playerStatData._maxNameLLength;
             plaAtkUP = fileLoader._currentData._playerStatData._plaAtkUP;

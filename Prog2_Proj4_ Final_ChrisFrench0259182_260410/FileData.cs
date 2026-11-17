@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static prog2_Proj3_beta_ChrisFrench0259182_260324.FileData;
 
@@ -11,14 +13,18 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
 {
     public class FileLoader
     {
-        public FileData _currentData;
-        
+        public const string DATAFILEPATH = "Data.Json";
+        public FileData _currentData { get; set; }
+
         public FileData LoadFile(string path)
         {
             try
             {
-                string j = File.ReadAllText(path);
-                _currentData = JsonSerializer.Deserialize<FileData>(j); 
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    string j = reader.ReadToEnd();
+                    _currentData = JsonConvert.DeserializeObject<FileData>(j);
+                }
             }
             catch (FileNotFoundException)
             {
@@ -36,7 +42,11 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
             }
-            if(_currentData == null) _currentData = new FileData();
+            if (_currentData == null)
+            {
+                Console.WriteLine("No data Loaded!");
+                _currentData = new FileData();
+            }
             return _currentData;
         }
 
@@ -45,11 +55,27 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
             FileData dat = new FileData();
             QuestData qDat = new QuestData();
             PlayerStatData pDat = new PlayerStatData();
-        }
-        public void Save(string path)//not called
-        {
-            string j = JsonSerializer.Serialize(_currentData);
-            File.WriteAllText(path, j);
+
+            qDat.AddQuest(new KillQuest(1));
+            qDat.AddQuest(new LocationQuest('x', "Reach the end!"));
+
+            pDat._maxNameLLength = 15;
+            pDat._plaAtkUP = 10;
+            pDat._plaMaxHP = 10;
+            pDat._name = "Sir gobsmacked";
+
+            dat.HandPlayerStatData(pDat);
+            dat.HandQuestData(qDat);
+
+            _currentData = dat;
+
+            JsonSerializerOptions options = new JsonSerializerOptions
+            { WriteIndented = true};
+
+
+            string j = System.Text.Json.JsonSerializer.Serialize(dat, options);
+
+            File.WriteAllText(DATAFILEPATH, j);
         }
 
     }
@@ -57,27 +83,57 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
     {
         public QuestData _questData { get; private set; }
         public PlayerStatData _playerStatData { get; private set;  }
+
+        public void HandQuestData(QuestData qDat) => _questData = qDat;
+        public void HandPlayerStatData(PlayerStatData pDat) => _playerStatData = pDat; 
+
         public FileData()
         {
             _questData = new QuestData();
-            _playerStatData = new PlayerStatData(); 
+            _playerStatData = new PlayerStatData();
         }
 
         //differentTypes
         public class QuestData
         {
-            public KillQuest[] _killQuests { get; private set; }
-            public LocationQuest[] _locationQuest { get; private set; }
+            public KillQuest[] _killQuests { get; set; }
+            public LocationQuest[] _locationQuest { get; set; }
 
-            public Quest[] _allQuests { get {
+            public void AddQuest(Quest quest)
+            {
+                if(_killQuests == null) _killQuests = new KillQuest[0];
+                if(_locationQuest == null) _locationQuest = new LocationQuest[0];
+                if (quest is LocationQuest)
+                {
+                    LocationQuest[] nq = new LocationQuest[_locationQuest.Length + 1];
+                    _locationQuest.CopyTo(nq, 0);
+                    nq[nq.Length - 1] = (LocationQuest)quest;
 
-                    Quest[] q = new Quest[(_killQuests.Length + _locationQuest.Length) - 2];
-                    _killQuests.CopyTo(q, 0);
-                    _locationQuest.CopyTo(q, _killQuests.Length);
+                    _locationQuest = nq;
+                }
+                else if (quest is KillQuest)
+                {
+                    KillQuest[] nq = new KillQuest[_killQuests.Length + 1];
+                    _killQuests.CopyTo(nq, 0);
+                    nq[nq.Length - 1] = (KillQuest)quest;
 
-                    return q;
-                } }
+                    _killQuests = nq;
+                }
+                else
+                {
+                    Console.WriteLine("Error: Quest data type unknown! Stop adding things!");
+                }
+            }
 
+            public Quest[] GetAllQuests()
+            {
+                if (_killQuests == null) _killQuests = new KillQuest[0];
+                if (_locationQuest == null) _locationQuest = new LocationQuest[0];
+                Quest[] q = new Quest[(_killQuests.Length + _locationQuest.Length)];
+                _killQuests.CopyTo(q, 0);
+                _locationQuest.CopyTo(q, _killQuests.Length);
+                return q;
+            }
             public QuestData()
             {
 
@@ -85,10 +141,10 @@ namespace prog2_Proj3_beta_ChrisFrench0259182_260324
         }
         public class PlayerStatData
         {
-            public string _name;
-            public int _maxNameLLength;
-            public int _plaAtkUP;
-            public int _plaMaxHP;
+            public string _name { get; set; }
+            public int _maxNameLLength { get; set; }
+            public int _plaAtkUP { get; set; }
+            public int _plaMaxHP { get; set; }
             public PlayerStatData()
             {
 
